@@ -1,0 +1,16 @@
+
+
+Requirements :-  CRUD API for Creating a Trigger (Event) ---> Event could be sending email/notification service/db operation
+
+
+send sms 12:00 , 10 --> 12:10 ---> 12:20  (Crontab )
+
+
+Event status --> created ---> Active (For 2 hours) ---> Archived ---> Delete(after 48 hours) [BACKGROUND JOB]
+
+        FOR ACTIVE STATUS :- 
+
+            If triggered using API (straight to ACTIVE status)
+            If Scheduled trigger (CREATED --> ACTIVE) on hitting the Scheduled time
+
+
