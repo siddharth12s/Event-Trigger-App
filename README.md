@@ -73,6 +73,7 @@ DATABASES = {
         "PORT": "5432",
     }
 }
+SECRET_KEY = "7fc27e0d108a776dd6c1b7cba2a5d7d2a105308bbc892befd81e03dfe863c950"
 ```
 
 ## Run the DOCKER
