@@ -91,3 +91,29 @@ docker-compose up
 - Go to http://0.0.0.0:8000/api/v1/docs for checking out the OpenAPI Schema
 
 ![text](image.png)
+
+## Live APP 
+- url :-  http://3.80.85.23:8000/api/v1/docs/
+![alt text](image-1.png)
+
+
+### Costing
+
+- I'm using Amazon EC2 t2.micro instance which comesup with 750 free hours.
+
+- So, for 30 * 24 or 31 * 24 = 720 to 744 hours the effective cost would be 0$, even for 5 API requests/day. 
+
+### RESOURCES used
+- ChatGPT, Stackoverflow
+- https://www.django-rest-framework.org/api-guide/generic-views/
+- Reddit for Docker queries and deployment.
+
+
+### Additional Features
+
+- Added JWTAuth for the API services
+
+![alt text](image-2.png)
+
+- User creation endpoint
+![alt text](<Screenshot from 2024-12-16 02-10-55.png>)
