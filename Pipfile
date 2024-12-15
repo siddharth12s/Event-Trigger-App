@@ -15,6 +15,7 @@ celery = {extras = ["redis"], version = "*"}
 flower = "*"
 django-celery-beat = "*"
 django-extensions = "*"
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
 
