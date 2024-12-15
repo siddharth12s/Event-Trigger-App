@@ -72,12 +72,18 @@ class EventSerializer(ModelSerializer):
 
 
 class EventLogSerializer(ModelSerializer):
+    event_name = serializers.CharField(source="event.name")
+
     class Meta:
         model = EventLog
         fields = "__all__"
+        extra_fields = ["event_name"]
 
 
 class ArchivedEventSerializer(ModelSerializer):
+    event_log_name = serializers.CharField(source="original_event.event.name")
+
     class Meta:
         model = ArchivedEvent
         fields = "__all__"
+        extra_fields = ["event_log_name"]

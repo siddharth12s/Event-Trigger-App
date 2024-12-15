@@ -22,6 +22,10 @@ class EventLog(TimeStamp):
     is_test = models.BooleanField(default=False)
     is_archived = models.BooleanField(default=False)
 
+    class Meta:
+        db_table = "event_log"
+        verbose_name = "event_log"
+
 
 class ArchivedEvent(TimeStamp):
     original_event = models.OneToOneField(EventLog, on_delete=models.CASCADE)
