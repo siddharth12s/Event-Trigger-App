@@ -10,12 +10,13 @@ from api.serializers.trigger_serializers import (
 )
 from django.shortcuts import get_object_or_404
 from tasks.event_log import handle_trigger_event
+from rest_framework.permissions import IsAuthenticated
 
 
 # Create your views here.
 class EventListCreateView(generics.ListCreateAPIView):
     queryset = Event.objects.all()
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
     serializer_class = EventSerializer
 
     def get(self, request):
@@ -71,7 +72,7 @@ class EventListCreateView(generics.ListCreateAPIView):
 
 class EventRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Event.objects.all()
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
     serializer_class = EventSerializer
 
     def put(self, request, id=None):
@@ -124,7 +125,7 @@ class EventRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
 
 class EventLogList(generics.ListAPIView):
     queryset = EventLog.objects.exclude(is_archived=True)
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
     serializer_class = EventLogSerializer
 
     def get(self, request):
@@ -135,7 +136,7 @@ class EventLogList(generics.ListAPIView):
 
 class ArchivedEventView(generics.ListAPIView):
     queryset = ArchivedEvent.objects.all()
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
     serializer_class = ArchivedEventSerializer
 
     def get(self, request):
