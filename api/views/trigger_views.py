@@ -48,7 +48,7 @@ class EventListCreateView(generics.ListCreateAPIView):
                 )
             else:
                 event_log_data = {
-                    "event": serializer.instance,
+                    "events": serializer.instance,
                     "event_type": "API",
                     "payload": payload,
                 }
@@ -110,7 +110,7 @@ class EventRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
 
         event = get_object_or_404(self.get_queryset(), id=id)
 
-        event_log = Eventlog.objects.filter(event=event)
+        event_log = Eventlog.objects.filter(events=event)
 
         if event_log.exists():
             return Response(

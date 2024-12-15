@@ -15,7 +15,7 @@ class Event(TimeStamp):
 
 class EventLog(TimeStamp):
     EVENT_TYPE_CHOICES = [("SCHEDULED", "SCHEDULED"), ("API", "API")]
-    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    events = models.ForeignKey(Event, on_delete=models.CASCADE)
     event_type = models.CharField(max_length=255, choices=EVENT_TYPE_CHOICES)
     timestamp = models.DateTimeField(auto_now_add=True)
     payload = models.JSONField(null=True, blank=True)
