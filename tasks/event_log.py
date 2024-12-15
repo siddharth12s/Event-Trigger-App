@@ -34,7 +34,8 @@ def handle_trigger_event(trigger_id, event_type):
 
 @shared_task
 def archive_old_events():
-    # Archive events older than 5 minutes
+    # Archive events older than 5 minutes 
+    # Change the minutes to 48 * 60 = 2880 minutes
     cutoff_date = now() - timedelta(minutes=5)
     old_logs = EventLog.objects.filter(timestamp__lt=cutoff_date)
     print(old_logs)
