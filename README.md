@@ -112,7 +112,14 @@ docker-compose up
 
 ### Additional Features
 
-- Added JWTAuth for the API services
+- Added JWTAuth for the API services 
+
+- **WORKING ON LOCAL** 
+
+- **BUILD FAILED ON EC2 INSTANCE FOR AUTHENTICATION SERVICE**
+
+- So reverted back without authentication feature
+
 
 ![alt text](image-2.png)
 
