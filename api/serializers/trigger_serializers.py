@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from api.models.trigger_models import Event
+from api.models.trigger_models import ArchivedEvent, Event, EventLog
 from rest_framework import serializers
 from django.utils import timezone
 
@@ -69,3 +69,15 @@ class EventSerializer(ModelSerializer):
                 )
 
         return attrs
+
+
+class EventLogSerializer(ModelSerializer):
+    class Meta:
+        model = EventLog
+        fields = "__all__"
+
+
+class ArchivedEventSerializer(ModelSerializer):
+    class Meta:
+        model = ArchivedEvent
+        fields = "__all__"

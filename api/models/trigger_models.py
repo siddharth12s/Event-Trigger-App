@@ -20,6 +20,7 @@ class EventLog(TimeStamp):
     timestamp = models.DateTimeField(auto_now_add=True)
     payload = models.JSONField(null=True, blank=True)
     is_test = models.BooleanField(default=False)
+    is_archived = models.BooleanField(default=False)
 
 
 class ArchivedEvent(TimeStamp):

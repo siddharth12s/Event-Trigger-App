@@ -34,6 +34,8 @@ ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     "api",
+    "tasks",
+    "django_extensions",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -43,6 +45,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "drf_spectacular",
     "drf_spectacular_sidecar",
+    "django_celery_beat",
 ]
 
 MIDDLEWARE = [
@@ -142,3 +145,17 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+CELERY_BROKER_URL = "redis://localhost:6379/0"
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_TASK_SERIALIZER = "json"
+
+from celery.schedules import crontab
+
+# Celery Beat schedule for the periodic task
+CELERY_BEAT_SCHEDULE = {
+    "archive-old-events-every-day": {
+        "task": "tasks.event_log.archive_old_events",
+        "schedule": crontab(minute="*/2"),  # Runs every day at midnight
+    },
+}

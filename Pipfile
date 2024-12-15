@@ -11,6 +11,10 @@ python-dotenv = "*"
 drf-spectacular = "*"
 drf-spectacular-sidecar = "*"
 psycopg2-binary = "*"
+celery = {extras = ["redis"], version = "*"}
+flower = "*"
+django-celery-beat = "*"
+django-extensions = "*"
 
 [dev-packages]
 
