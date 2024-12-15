@@ -28,5 +28,5 @@ class EventLog(TimeStamp):
 
 
 class ArchivedEvent(TimeStamp):
-    original_event = models.OneToOneField(EventLog, on_delete=models.CASCADE)
+    original_event = models.ForeignKey(EventLog, on_delete=models.CASCADE)
     archived_at = models.DateTimeField(auto_now_add=True)
