@@ -10,7 +10,7 @@ def handle_trigger_event(trigger_id, event_type):
     try:
         event = Event.objects.get(id=trigger_id)
         EventLog.objects.create(
-            event=event,
+            events=event,
             event_type=event_type,
             timestamp=now(),
             payload=event.payload,
