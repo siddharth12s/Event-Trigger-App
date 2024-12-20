@@ -10,6 +10,16 @@ RUN apt-get update && apt-get install -y netcat-openbsd
 # Install pipenv
 RUN pip install pipenv
 
+##############################
+# Install pipenv
+RUN pip install --no-cache-dir pipenv
+
+# Copy Pipfile and Pipfile.lock to install dependencies in the pipenv environment
+COPY Pipfile Pipfile.lock /app/
+
+# Install project dependencies using pipenv
+RUN pipenv install --system --deploy
+############################################
 # # Ensure Pipfile.lock is removed (if it exists from prior builds)
 # RUN rm -f Pipfile.lock
 COPY ./wait-for-it.sh /app/wait-for-it.sh
