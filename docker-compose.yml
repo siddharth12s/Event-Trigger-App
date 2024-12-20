@@ -146,8 +146,9 @@ services:
     networks:
       - app-network
       - redis-server # Connect to the same network as Redis
-    command: /bin/bash -c "pip install -r /app/requirements.txt && python /app/manage.py migrate && python /app/manage.py runserver 0.0.0.0:8000"
+    # command: /bin/bash -c "pip install -r /app/requirements.txt && python /app/manage.py migrate && python /app/manage.py runserver 0.0.0.0:8000"
     # command: /bin/bash -c "/app/wait-for-it.sh 0.0.0.0:5432 --timeout=60 -- pip install -r /app/requirements.txt && python /app/manage.py migrate && python /app/manage.py runserver 0.0.0.0:8000"
+    command: /bin/bash -c "pip install -r /app/requirements.txt && python /app/manage.py migrate api && python /app/manage.py makemigrations && python /app/manage.py migrate python /app/manage.py runserver 0.0.0.0:8000"
 
   celery:
     build: .
