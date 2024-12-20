@@ -54,6 +54,7 @@ class EventListCreateView(generics.ListCreateAPIView):
                     "event_type": "API",
                     "payload": payload,
                     "user": request.user.id,
+                    "event_name": event_instance.name,
                 }
 
                 event_log = EventLogSerializer(data=event_log_data)
@@ -99,6 +100,7 @@ class EventRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
                 "event_type": "API",
                 "payload": payload,
                 "user": request.user.id,
+                "event_name": event_instance.name,
             }
 
             event_log = EventLogSerializer(data=event_log_data)
