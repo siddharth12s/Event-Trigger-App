@@ -3,18 +3,29 @@ from django.utils.timezone import now
 from api.models.trigger_models import EventLog, Event, ArchivedEvent
 from datetime import datetime, timedelta
 from django.db import transaction
+import logging
+
+logger = logging.getLogger("celery")
+
+from api.models.user_models import User
 
 
 @shared_task
-def handle_trigger_event(trigger_id, event_type):
+def handle_trigger_event(trigger_id, event_type, user_id):
+
+    logger.info(
+        f"Task started: trigger_id={trigger_id}, event_type={event_type}, user_id={user_id}"
+    )
     try:
         event = Event.objects.get(id=trigger_id)
+        user = User.objects.get(id=user_id)
         EventLog.objects.create(
             events=event,
             event_type=event_type,
             timestamp=now(),
             payload=event.payload,
             is_test=True if event.is_test_trigger else False,
+            user=user,
         )
 
         """
@@ -27,14 +38,16 @@ def handle_trigger_event(trigger_id, event_type):
             event.schedule_time = new_time
             event.save()
 
-            handle_trigger_event.apply_async((event.id, event_type), eta=new_time)
+            handle_trigger_event.apply_async(
+                (event.id, event_type, user_id), eta=new_time
+            )
     except Event.DoesNotExist:
         pass
 
 
 @shared_task
 def archive_old_events():
-    # Archive events older than 5 minutes 
+    # Archive events older than 5 minutes
     # Change the minutes to 48 * 60 = 2880 minutes
     cutoff_date = now() - timedelta(minutes=5)
     old_logs = EventLog.objects.filter(timestamp__lt=cutoff_date)

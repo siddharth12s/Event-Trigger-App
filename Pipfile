@@ -16,6 +16,7 @@ flower = "*"
 django-celery-beat = "*"
 django-extensions = "*"
 djangorestframework-simplejwt = "*"
+ipython = "*"
 
 [dev-packages]
 

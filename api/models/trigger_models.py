@@ -1,5 +1,6 @@
 from django.db import models
 from api.models.base_models import TimeStamp
+from api.models.user_models import User
 
 
 class Event(TimeStamp):
@@ -11,6 +12,7 @@ class Event(TimeStamp):
     recurring_minutes = models.IntegerField(null=True, blank=True)
     payload = models.JSONField(null=True, blank=True)
     is_test_trigger = models.BooleanField(default=False)
+    user = models.ForeignKey(User, on_delete=models.PROTECT,null=True,related_name="events")
 
 
 class EventLog(TimeStamp):
@@ -21,6 +23,8 @@ class EventLog(TimeStamp):
     payload = models.JSONField(null=True, blank=True)
     is_test = models.BooleanField(default=False)
     is_archived = models.BooleanField(default=False)
+    user = models.ForeignKey(User, on_delete=models.PROTECT,null=True,related_name="event_logs")
+
 
     class Meta:
         db_table = "event_log"

@@ -20,7 +20,7 @@ class EventListCreateView(generics.ListCreateAPIView):
     serializer_class = EventSerializer
 
     def get(self, request):
-        qs = self.get_queryset()
+        qs = self.get_queryset().filter(user=request.user)
         serializer = self.get_serializer(qs, many=True)
         return Response(data={"message": serializer.data})
 
@@ -33,7 +33,7 @@ class EventListCreateView(generics.ListCreateAPIView):
 
         serializer = self.get_serializer(data=payload)
         serializer.is_valid(raise_exception=True)
-        event_instance = serializer.save()
+        event_instance = serializer.save(user=request.user)
         if not is_test_trigger:
             is_recurring = payload.get("is_recurring", None)
             is_scheduled_trigger = payload.get("is_scheduled_trigger", None)
@@ -44,14 +44,16 @@ class EventListCreateView(generics.ListCreateAPIView):
                 write function call
                 """
                 schedule_time = payload.get("schedule_time")
+                print(request.user)
                 handle_trigger_event.apply_async(
-                    (event_instance.id, "SCHEDULED"), eta=schedule_time
+                    (event_instance.id, "SCHEDULED", request.user.id), eta=schedule_time
                 )
             else:
                 event_log_data = {
                     "events": serializer.instance,
                     "event_type": "API",
                     "payload": payload,
+                    "user": request.user.id,
                 }
 
                 event_log = EventLogSerializer(data=event_log_data)
@@ -77,7 +79,8 @@ class EventRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
 
     def put(self, request, id=None):
 
-        event = get_object_or_404(self.get_queryset(), id=id)
+        qs = self.get_queryset().filter(user=request.user)
+        event = get_object_or_404(qs, id=id)
 
         serializer = self.get_serializer(event, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
@@ -88,13 +91,14 @@ class EventRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
         if instance.is_scheduled_trigger:
             schedule_time = instance.get("schedule_time")
             handle_trigger_event.apply_async(
-                (event_instance.id, "SCHEDULED"), eta=schedule_time
+                (event_instance.id, "SCHEDULED", request.user.id), eta=schedule_time
             )
         else:
             event_log_data = {
                 "event": serializer.instance,
                 "event_type": "API",
                 "payload": payload,
+                "user": request.user.id,
             }
 
             event_log = EventLogSerializer(data=event_log_data)
@@ -108,8 +112,8 @@ class EventRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def delete(self, request, id=None):
-
-        event = get_object_or_404(self.get_queryset(), id=id)
+        qs = self.get_queryset().filter(user=request.user)
+        event = get_object_or_404(qs, id=id)
 
         event_log = Eventlog.objects.filter(events=event)
 
@@ -129,7 +133,7 @@ class EventLogList(generics.ListAPIView):
     serializer_class = EventLogSerializer
 
     def get(self, request):
-        qs = self.get_queryset()
+        qs = self.get_queryset().filter(user=request.user)
         serializer = self.get_serializer(qs, many=True)
         return Response(data={"message": serializer.data})
 

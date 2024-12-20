@@ -173,7 +173,7 @@ services:
     networks:
       - app-network
       - redis-server # Connect to the same network as Redis
-    command: celery -A segwise worker --loglevel=info
+    command: celery -A segwise worker --loglevel=debug
 
   celery-beat:
     build: .
