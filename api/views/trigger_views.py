@@ -117,14 +117,17 @@ class EventRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
         qs = self.get_queryset().filter(user=request.user)
         event = get_object_or_404(qs, id=id)
 
-        event_log = Eventlog.objects.filter(events=event)
+        event_log = EventLog.objects.filter(events=event)
+        archived_log = ArchivedEvent.objects.filter(original_event=event_log)
 
-        if event_log.exists():
+        if event_log.exists() or archived_log.exists():
             return Response(
                 {"message": "Cannot delete the event since it is in process"},
                 status=400,
             )
 
+        archived_log.delete()
+        event_log.delete()
         event.delete()
         return Response({"message": "Event deleted!"}, status=200)
 

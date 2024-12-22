@@ -1,6 +1,8 @@
 from django.db import models
 from api.models.base_models import TimeStamp
 from api.models.user_models import User
+from datetime import timedelta
+from django.utils import timezone
 
 
 class Event(TimeStamp):
@@ -12,7 +14,18 @@ class Event(TimeStamp):
     recurring_minutes = models.IntegerField(null=True, blank=True)
     payload = models.JSONField(null=True, blank=True)
     is_test_trigger = models.BooleanField(default=False)
-    user = models.ForeignKey(User, on_delete=models.PROTECT,null=True,related_name="events")
+    user = models.ForeignKey(
+        User, on_delete=models.PROTECT, null=True, related_name="events"
+    )
+    expiry_time = models.DateTimeField(null=True, blank=True, default=None)
+
+    def save(self, *args, **kwargs):
+        if self.schedule_time and not self.expiry_time:
+            self.expiry_time = self.schedule_time + timedelta(minutes=5)
+        super().save(*args, **kwargs)
+
+    def has_expired(self):
+        return self.expiry_time <= timezone.now()
 
 
 class EventLog(TimeStamp):
@@ -23,8 +36,9 @@ class EventLog(TimeStamp):
     payload = models.JSONField(null=True, blank=True)
     is_test = models.BooleanField(default=False)
     is_archived = models.BooleanField(default=False)
-    user = models.ForeignKey(User, on_delete=models.PROTECT,null=True,related_name="event_logs")
-
+    user = models.ForeignKey(
+        User, on_delete=models.PROTECT, null=True, related_name="event_logs"
+    )
 
     class Meta:
         db_table = "event_log"
