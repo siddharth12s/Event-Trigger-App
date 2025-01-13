@@ -21,7 +21,7 @@ class Event(TimeStamp):
 
     def save(self, *args, **kwargs):
         if self.schedule_time and not self.expiry_time:
-            self.expiry_time = self.schedule_time + timedelta(minutes=5)
+            self.expiry_time = self.schedule_time + timedelta(hours=2)
         super().save(*args, **kwargs)
 
     def has_expired(self):

@@ -86,6 +86,32 @@ docker-compose build
 docker-compose up
 ```
 
+## Payload 
+
+1. Recurring Events:- 
+ ```js
+ {
+   "name": "string",
+  "is_scheduled_trigger": true,
+  "start_time": "2025-01-07T02:58:59.649Z",
+  "schedule_time": "2025-01-07T02:58:59.649Z",
+  "is_recurring": true,
+  "recurring_minutes": 2147483647,
+  "is_test_trigger": true,
+}
+```
+
+2. Non Recurring Events:- 
+```js
+{
+  "name": "string",
+  "start_time": "2025-01-07T02:58:59.649Z",
+  "schedule_time": "2025-01-07T02:58:59.649Z",
+  "is_recurring": false,
+  "payload": "string",
+  "is_test_trigger": true,
+}
+```
 
 ### APP Interface
 
@@ -113,12 +139,6 @@ docker-compose up
 ### Additional Features
 
 - Added JWTAuth for the API services 
-
-- **WORKING ON LOCAL** 
-
-- **BUILD FAILED ON EC2 INSTANCE FOR AUTHENTICATION SERVICE**
-
-- So reverted back without authentication feature
 
 
 ![alt text](image-2.png)
