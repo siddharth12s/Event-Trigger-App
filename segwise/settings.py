@@ -161,11 +161,11 @@ from celery.schedules import crontab
 CELERY_BEAT_SCHEDULE = {
     "archive-old-events-every-day": {
         "task": "tasks.event_log.archive_old_events",
-        "schedule": crontab(minute="*/15"),  # Runs every 2 minutes
+        "schedule": crontab(minute="*/5"),  # Runs every 5 minutes
     },
     "delete-events-every-day": {
         "task": "tasks.event_log.delete_expired_events",
-        "schedule": crontab(minute="*/30"),  # Runs every 2 minutes
+        "schedule": crontab(minute="*/30"),  # Runs every 30 minutes
     },
 }
 

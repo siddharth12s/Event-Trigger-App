@@ -53,7 +53,7 @@ def handle_trigger_event(trigger_id, event_type, user_id):
 def archive_old_events():
     # Archive events older than 5 minutes
     # Change the minutes to 48 * 60 = 2880 minutes
-    cutoff_date = now() - timedelta(minutes=5)
+    cutoff_date = now() - timedelta(hours=2)
     old_logs = EventLog.objects.filter(timestamp__lt=cutoff_date, is_archived=False)
     print(old_logs)
     with transaction.atomic():
@@ -66,8 +66,8 @@ def archive_old_events():
 @shared_task
 def delete_expired_events():
     cutoff_time = now()
-    event_log_cutoff_time = cutoff_time - timedelta(minutes=5)
-    archived_event_cutoff_time = cutoff_time - timedelta(minutes=15)
+    event_log_cutoff_time = cutoff_time - timedelta(hours=2)
+    archived_event_cutoff_time = cutoff_time - timedelta(hours=48)
 
     events = Event.objects.filter(expiry_time__lt=cutoff_time)
 
