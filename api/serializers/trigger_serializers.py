@@ -7,7 +7,14 @@ from django.utils import timezone
 class EventSerializer(ModelSerializer):
     class Meta:
         model = Event
-        fields = "__all__"
+        exclude = ["user"]
+        extra_kwargs = {
+            "user": {"write_only": True},
+        }
+
+    def create(self, validated_data):
+        validated_data["user"] = self.context["request"].user 
+        return super().create(validated_data)
 
     def validate(self, attrs):
         is_scheduled_trigger = attrs.get("is_scheduled_trigger")
