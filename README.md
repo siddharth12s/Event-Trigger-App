@@ -85,7 +85,35 @@ docker-compose build
 ```sh
 docker-compose up
 ```
+## Possible Errors on Windows OS
 
+```
+sh
+Gracefully stopping... (press Ctrl+C again to force)
+Error response from daemon: error while creating mount source path '/run/desktop/mnt/host/c/Users/siddh/Desktop/segwise/segwise': mkdir /run/desktop/mnt/host/c: file exists
+```
+
+- Solutions 
+
+Bring the containers down, remove and restart docker service on windows
+
+```sh
+docker-compose down
+docker rm -f $(docker ps -a -q)
+docker volume rm $(docker volume ls -q)
+```
+
+- Run on Powershell
+```powershell
+Stop-Service -Name com.docker.service
+Start-Service -Name com.docker.service
+```
+
+- Build again
+```sh
+docker-compose build
+docker-compose up
+```
 ## Payload 
 
 1. Recurring Events:- 
