@@ -4,9 +4,9 @@ FROM python:3.10
 # Set working directory
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y --no-install-recommends gnupg2 ca-certificates \
-    && apt-key adv --fetch-keys https://ftp-master.debian.org/keys/archive-key-12.asc \
-    && apt-key adv --fetch-keys https://ftp-master.debian.org/keys/archive-key-13.asc \
+RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends gnupg2 ca-certificates \
+    && curl -fsSL https://ftp-master.debian.org/keys/archive-key-12.asc | tee /etc/apt/trusted.gpg.d/archive-key-12.asc \
+    && curl -fsSL https://ftp-master.debian.org/keys/archive-key-13.asc | tee /etc/apt/trusted.gpg.d/archive-key-13.asc \
     && apt-get clean
 
 
