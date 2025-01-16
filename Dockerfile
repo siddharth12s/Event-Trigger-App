@@ -4,6 +4,12 @@ FROM python:3.10
 # Set working directory
 WORKDIR /app
 
+RUN apt-get update && apt-get install -y --no-install-recommends gnupg2 ca-certificates \
+    && apt-key adv --fetch-keys https://ftp-master.debian.org/keys/archive-key-12.asc \
+    && apt-key adv --fetch-keys https://ftp-master.debian.org/keys/archive-key-13.asc \
+    && apt-get clean
+
+
 RUN apt-get update && apt-get install -y netcat-openbsd
 
 
